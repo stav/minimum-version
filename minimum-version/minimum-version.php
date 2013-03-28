@@ -52,15 +52,41 @@ if (!class_exists("MinimumVersion"))
              || !current_user_can('manage_options') )
                 return;
 
-            add_options_page(
+            add_plugins_page(
                 __('Minimum Version', MINIMUMVERSION_TEXTDOMAIN),
-                __('Minimum Version', MINIMUMVERSION_TEXTDOMAIN),
-                'manage_options',
-                basename(__FILE__),
-                array($this, '_options_page'));
+                'Minimum Version',
+                'read',
+                MINIMUMVERSION_TEXTDOMAIN.'-plugins',
+                array($this, '_plugins_page')
+            );
+
+            // add_options_page(
+            //     __('Minimum Version', MINIMUMVERSION_TEXTDOMAIN),
+            //     'Minimum Version',
+            //     'manage_options',
+            //     MINIMUMVERSION_TEXTDOMAIN.'-settings',
+            //     array($this, '_options_page')
+            // );
         }
 
         function _options_page ( )
+        {
+            ?>
+                <div class="wrap">
+                    <?php screen_icon(); ?>
+                    <h2> Minimum Version </h2>
+                    <form action="options.php" method="post">
+                        <?php settings_fields(MINIMUMVERSION_TEXTDOMAIN); ?>
+                        <?php do_settings_sections(__FILE__); ?>
+                        <p class="submit">
+                            <input name="Submit" type="submit" class="button-primary" value="<?php esc_attr_e('Save Changes'); ?>" />
+                        </p>
+                    </form>
+                </div>
+            <?php
+        }
+
+        function _plugins_page ( )
         {
             ?>
                 <div class="wrap minver">
@@ -71,10 +97,12 @@ if (!class_exists("MinimumVersion"))
                         }
                     </style>
 
+                    <?php screen_icon(); ?>
                     <h2> Minimum Version </h2>
 
-                    <p> This plugin looks thru the plugins to determine what
-                      Wordpress version is needed to run the plugin. </p>
+                    <p> This plugin looks through all the plugins on this site
+                        to determine what Wordpress version is needed to run
+                        each one. </p>
 
                     <p> The following limitations are currently in place: </p>
                     <ul>
